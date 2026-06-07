@@ -32,7 +32,6 @@ class AntigravityDataClaw:
         print(f"   Result: {validation_result['message']}")
 
         # Step 3: Autonomous Decision & Agentic Context Escalation
-     # Step 3: Autonomous Decision & Agentic Context Escalation
         if freshness_result["status"] == "FAIL" or validation_result["status"] == "FAIL":
             self.log_state_transition("DIAGNOSING")
             
@@ -64,12 +63,15 @@ class AntigravityDataClaw:
                     diagnosis_summary = await response.text()
                     
             except Exception as e:
-                # 🛠️ THIS EXCEPT BLOCK WAS MISSING IN YOUR FILE:
                 diagnosis_summary = f"Antigravity Runtime Inference failed. Details:\n{str(e)}"
 
             # Step 4: Escalation Delivery
             self.log_state_transition("ESCALATING")
             tools.send_terminal_alert(self.claw_name, self.state, diagnosis_summary)
+            
+            # 🔥 Automated Email Dispatch Integration
+            tools.send_escalation_email(self.claw_name, self.state, diagnosis_summary)
+
             return "Workflow completed: Failures autonomously resolved via Antigravity runtime."
             
         else:
